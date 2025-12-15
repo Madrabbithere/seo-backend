@@ -20,7 +20,7 @@ class GeminiService:
     def __init__(self):
         """Initialize the Gemini client"""
         self.client = genai.Client(api_key=settings.gemini_api_key)
-        self.model = "gemini-2.0-flash"
+        self.model = "gemini-2.5-flash"
     
     async def generate_brief(
         self,
