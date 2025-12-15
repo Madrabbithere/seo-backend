@@ -2,14 +2,12 @@
 Gemini AI service for SEO brief generation
 """
 
-import json
 import logging
 from google import genai
 from google.genai import types
 
 from app.core.config import settings
 from app.core.prompts import SEO_BRIEF_PROMPT
-from app.schemas.brief import SEOBrief
 
 logger = logging.getLogger(__name__)
 
@@ -35,7 +33,7 @@ class GeminiService:
         target_audience: str,
         primary_keywords: list[str],
         secondary_keywords: list[str]
-    ) -> SEOBrief:
+    ) -> str:
         """
         Generate an SEO brief using Gemini API
         
@@ -46,10 +44,10 @@ class GeminiService:
             secondary_keywords: List of secondary keywords
             
         Returns:
-            SEOBrief: The generated SEO brief
+            str: The generated SEO brief as plain text
             
         Raises:
-            Exception: If API call fails or response parsing fails
+            Exception: If API call fails
         """
         # Format the prompt
         prompt = SEO_BRIEF_PROMPT.format(
@@ -60,7 +58,7 @@ class GeminiService:
         )
         
         try:
-            # Generate content using the new SDK
+            # Generate content using the SDK
             response = self.client.models.generate_content(
                 model=self._model,
                 contents=prompt,
@@ -71,25 +69,9 @@ class GeminiService:
                 )
             )
             
-            # Parse the JSON response
-            response_text = response.text
+            # Return the plain text response directly
+            return response.text
             
-            # Clean up response if it has markdown code blocks
-            if response_text.startswith("```"):
-                response_text = response_text.strip("```").strip()
-                if response_text.startswith("json"):
-                    response_text = response_text[4:].strip()
-            
-            # Parse JSON
-            brief_data = json.loads(response_text)
-            
-            # Validate and return as Pydantic model
-            return SEOBrief(**brief_data)
-            
-        except json.JSONDecodeError as e:
-            logger.error(f"Failed to parse Gemini response as JSON: {e}")
-            logger.error(f"Response text: {response_text[:500]}")
-            raise ValueError(f"Failed to parse AI response: {e}")
         except Exception as e:
             logger.error(f"Gemini API error: {e}")
             raise

@@ -2,46 +2,36 @@
 Gemini prompts for SEO brief generation
 """
 
-SEO_BRIEF_PROMPT = """You are an expert SEO content strategist with years of experience creating high-ranking content. Generate a comprehensive SEO brief for the following content:
+SEO_BRIEF_PROMPT = """You are an expert SEO content strategist. Generate a complete SEO content brief for the following topic:
 
 **Title:** {title}
 **Target Audience:** {target_audience}
 **Primary Keywords:** {primary_keywords}
 **Secondary Keywords:** {secondary_keywords}
 
-Create a detailed SEO brief that will help a content writer create optimized content. Your response must be valid JSON with this exact structure:
+Create a comprehensive, ready-to-use SEO brief in plain text format. Structure it clearly with sections that a content writer can easily follow. Include:
 
-{{
-    "meta_title": "A compelling meta title under 60 characters that includes the primary keyword",
-    "meta_description": "A compelling meta description under 155 characters that encourages clicks and includes keywords",
-    "h1_suggestion": "The main H1 heading for the page",
-    "content_outline": [
-        "Introduction section description",
-        "Main section 1 with key points to cover",
-        "Main section 2 with key points to cover",
-        "Main section 3 with key points to cover",
-        "Conclusion section description"
-    ],
-    "word_count_recommendation": 1500,
-    "keyword_placement_tips": [
-        "Specific tip for keyword placement 1",
-        "Specific tip for keyword placement 2",
-        "Specific tip for keyword placement 3"
-    ],
-    "internal_linking_suggestions": [
-        "Suggested internal link topic 1",
-        "Suggested internal link topic 2",
-        "Suggested internal link topic 3"
-    ]
-}}
+1. **META TITLE** (under 60 characters, include primary keyword)
 
-Important guidelines:
-- Make the meta title compelling and under 60 characters
-- Make the meta description action-oriented and under 155 characters
-- Provide 4-6 detailed content outline sections
-- Recommend appropriate word count based on topic complexity
-- Give specific, actionable keyword placement tips
-- Suggest relevant internal linking opportunities
+2. **META DESCRIPTION** (under 155 characters, compelling and action-oriented)
 
-Respond ONLY with valid JSON. Do not include any markdown formatting, code blocks, or explanations.
+3. **H1 HEADING** (main page heading)
+
+4. **RECOMMENDED WORD COUNT** (based on topic complexity)
+
+5. **CONTENT OUTLINE**
+   - Write detailed section headings with brief descriptions of what to cover
+   - Include 5-8 main sections
+   - Make it comprehensive and actionable
+
+6. **KEYWORD PLACEMENT TIPS**
+   - Where to place primary keywords
+   - Where to place secondary keywords
+   - Natural integration strategies
+
+7. **INTERNAL LINKING SUGGESTIONS**
+   - Related topics to link to
+   - Anchor text recommendations
+
+Format the response as a clean, readable document that can be easily copied and used by a content writer. Use clear headings and bullet points. Do NOT use JSON format - provide plain text only.
 """
