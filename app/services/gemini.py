@@ -17,10 +17,17 @@ logger = logging.getLogger(__name__)
 class GeminiService:
     """Service for interacting with Google Gemini API"""
     
-    def __init__(self):
-        """Initialize the Gemini client"""
-        self.client = genai.Client(api_key=settings.gemini_api_key)
-        self.model = "gemini-2.5-flash"
+    _client = None
+    _model = "gemini-2.5-flash"
+    
+    @property
+    def client(self):
+        """Lazy initialization of Gemini client"""
+        if self._client is None:
+            if not settings.gemini_api_key:
+                raise ValueError("GEMINI_API_KEY environment variable is not set")
+            self._client = genai.Client(api_key=settings.gemini_api_key)
+        return self._client
     
     async def generate_brief(
         self,
@@ -55,7 +62,7 @@ class GeminiService:
         try:
             # Generate content using the new SDK
             response = self.client.models.generate_content(
-                model=self.model,
+                model=self._model,
                 contents=prompt,
                 config=types.GenerateContentConfig(
                     temperature=0.7,
@@ -88,5 +95,5 @@ class GeminiService:
             raise
 
 
-# Singleton instance
+# Singleton instance - client initialized lazily on first use
 gemini_service = GeminiService()
