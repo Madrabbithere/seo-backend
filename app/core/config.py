@@ -3,6 +3,7 @@ Application configuration using pydantic-settings
 """
 
 from pydantic_settings import BaseSettings
+from pydantic import computed_field
 
 
 class Settings(BaseSettings):
@@ -11,13 +12,14 @@ class Settings(BaseSettings):
     # Gemini API
     gemini_api_key: str = ""
     
-    # CORS
-    allowed_origins_str: str = "http://localhost:3000"
+    # CORS - Railway uses ALLOWED_ORIGINS env var
+    allowed_origins: str = "http://localhost:3000"
     
+    @computed_field
     @property
-    def allowed_origins(self) -> list[str]:
+    def cors_origins(self) -> list[str]:
         """Parse allowed origins from comma-separated string"""
-        return [origin.strip() for origin in self.allowed_origins_str.split(",")]
+        return [origin.strip() for origin in self.allowed_origins.split(",")]
     
     class Config:
         env_file = ".env"
