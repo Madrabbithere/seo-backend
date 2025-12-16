@@ -1,3 +1,3 @@
-from .brief import BriefRequest, BriefResponse, SEOBrief
+from .brief import BriefRequest, BriefResponse
 
-__all__ = ["BriefRequest", "BriefResponse", "SEOBrief"]
+__all__ = ["BriefRequest", "BriefResponse"]
